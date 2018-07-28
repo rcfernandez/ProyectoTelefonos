@@ -8,10 +8,19 @@ namespace ProyectoTelefonos.Controllers
 {
     public class HomeController : Controller
     {
+
+        ModelDB db = new ModelDB();
+
+
         public ActionResult Index()
         {
-            return View();
+
+
+            return View(db.Interno.ToList());
         }
+
+
+
 
         public ActionResult About()
         {
