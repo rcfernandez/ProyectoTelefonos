@@ -53,6 +53,9 @@
       <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Rotativa, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Rotativa.1.7.3\lib\net461\Rotativa.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -156,21 +159,24 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Controllers\AreasController.cs" />
+    <Compile Include="Controllers\DirectosController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\InternosController.cs" />
     <Compile Include="Controllers\PisosController.cs" />
-    <Compile Include="Controllers\RacksController.cs" />
+    <Compile Include="Controllers\PuestosController.cs" />
     <Compile Include="Controllers\SubAreasController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201807282240589_Initial.cs" />
-    <Compile Include="Migrations\201807282240589_Initial.Designer.cs">
-      <DependentUpon>201807282240589_Initial.cs</DependentUpon>
+    <Compile Include="Migrations\201808071847413_Initial.cs" />
+    <Compile Include="Migrations\201808071847413_Initial.Designer.cs">
+      <DependentUpon>201808071847413_Initial.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\ModelDB.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\InternoService.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap-theme.css" />
@@ -181,11 +187,16 @@
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="Rotativa\help-wkhtmltoimage.txt" />
+    <Content Include="Rotativa\help-wkhtmltopdf.txt" />
+    <Content Include="Rotativa\wkhtmltoimage.exe" />
+    <Content Include="Rotativa\wkhtmltopdf.exe" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="ApplicationInsights.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="App_Browsers\qt.browser" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.3.1.js" />
     <Content Include="Scripts\jquery-3.3.1.min.js" />
@@ -226,15 +237,25 @@
     <Content Include="Views\Pisos\Details.cshtml" />
     <Content Include="Views\Pisos\Edit.cshtml" />
     <Content Include="Views\Pisos\Index.cshtml" />
-    <Content Include="Views\Racks\Create.cshtml" />
-    <Content Include="Views\Racks\Delete.cshtml" />
-    <Content Include="Views\Racks\Details.cshtml" />
-    <Content Include="Views\Racks\Edit.cshtml" />
-    <Content Include="Views\Racks\Index.cshtml" />
+    <Content Include="Views\Puestos\Create.cshtml" />
+    <Content Include="Views\Puestos\Delete.cshtml" />
+    <Content Include="Views\Puestos\Details.cshtml" />
+    <Content Include="Views\Puestos\Edit.cshtml" />
+    <Content Include="Views\Puestos\Index.cshtml" />
+    <Content Include="Views\Areas\Create.cshtml" />
+    <Content Include="Views\Areas\Delete.cshtml" />
+    <Content Include="Views\Areas\Details.cshtml" />
+    <Content Include="Views\Areas\Edit.cshtml" />
+    <Content Include="Views\Areas\Index.cshtml" />
+    <Content Include="Views\Directos\Create.cshtml" />
+    <Content Include="Views\Directos\Delete.cshtml" />
+    <Content Include="Views\Directos\Details.cshtml" />
+    <Content Include="Views\Directos\Edit.cshtml" />
+    <Content Include="Views\Directos\Index.cshtml" />
+    <Content Include="Views\Home\_ListadoInternos.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Services\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />
@@ -250,8 +271,8 @@
     <Content Include="Scripts\jquery-3.3.1.min.map" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201807282240589_Initial.resx">
-      <DependentUpon>201807282240589_Initial.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201808071847413_Initial.resx">
+      <DependentUpon>201808071847413_Initial.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

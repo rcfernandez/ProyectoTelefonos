@@ -1,39 +1,80 @@
 ﻿@model IEnumerable<ProyectoTelefonos.SubArea>
 
+
 @{
     ViewBag.Title = "Index";
 }
 
-<h2>Index</h2>
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.Nombre)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Referente)
-        </th>
-        <th></th>
-    </tr>
+<h2>Administracion de Sub-Areas</h2>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Nombre)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Referente)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
-            @Html.ActionLink("Details", "Details", new { id=item.Id }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.Id })
-        </td>
-    </tr>
-}
+<p>@Html.ActionLink("Create New", "Create")</p>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>
+                <span>Id</span>
+            </th>
+            <th>
+                <span>Sub-Area</span>
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Area)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Pisos)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Referente)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+
+    <tbody class="buscar">
+        @foreach (var item in Model)
+        {
+
+            if (item.Nombre != "(sin sub-area)" && item.Internos.Select(i => i.NoMostrar).FirstOrDefault() != true)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Id)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Nombre)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Area.Nombre)
+                    </td>
+                    <td>
+                        @if (item.Pisos.Select(p => p.Numero).FirstOrDefault() == -1L)
+                        {
+                            <span>SS</span>
+                        }
+                        else if (item.Pisos.Select(p => p.Numero).FirstOrDefault() == 0L)
+                        {
+                            <span>PB</span>
+                        }
+                        else
+                        {
+                            @item.Pisos.Select(p => p.Numero).FirstOrDefault()
+                        }
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Referente)
+                    </td>
+                    <td>
+                        @Html.ActionLink(" ", "Edit", new { id = item.Id }, new { @class = "glyphicon glyphicon-pencil", @style = "font-size: 15px" })&nbsp;
+                        @Html.ActionLink(" ", "Details", new { id = item.Id }, new { @class = "glyphicon glyphicon-list", @style = "font-size: 15px" })&nbsp;
+                        @Html.ActionLink(" ", "Delete", new { id = item.Id }, new { @class = "glyphicon glyphicon-remove", @style = "font-size: 15px" })&nbsp;
+                    </td>
+                </tr>
+            }
+
+        }
+
+     </tbody>
 
 </table>

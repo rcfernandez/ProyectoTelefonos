@@ -1,43 +1,23 @@
-﻿
-@model IEnumerable<ProyectoTelefonos.Interno>
+﻿@model IEnumerable<ProyectoTelefonos.SubArea>
 
 @{
     ViewBag.Title = "Home Page";
 }
 
+
 <div class="row">
+
     <div class="col-md-12">
-
-        <h2>Listado de Internos</h2>
-        <br />
-        <table class="table">
-            <tr>
-                <th>
-                    <span>Piso</span>
-                </th>
-                <th>
-                    <span>Sub-Area</span>
-                </th>
-                <th>
-                    <span>Referente</span>
-                </th>
-                <th>
-                    <span>Interno</span>
-                </th>
-            </tr>
-
-            @foreach (var item in Model)
-            {
-            <tr>
-                <td>@Html.DisplayFor(modelItem => item.SubArea.Pisos)</td>
-                <td>@Html.DisplayFor(modelItem => item.SubArea.Nombre)</td>
-                <td>@Html.DisplayFor(modelItem => item.SubArea.Referente)</td>
-                <td>@Html.DisplayFor(modelItem => item.Numero)</td>
-            </tr>
-            }
-
-        </table>
-
-
-
+        <h2>Listado General</h2>
+        <p>@Html.ActionLink(".Descargar", "ListadoInternos", null, new { @class = "glyphicon glyphicon-save", @style = "font-size: 16px;" })</p>
     </div>
+
+    <!--vista parcial al listado de internos-->
+    <div class="col-md-12">
+        @Html.Partial("_ListadoInternos")
+    </div>
+
+</div>
+
+
+

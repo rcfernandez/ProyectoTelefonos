@@ -17,7 +17,7 @@ namespace ProyectoTelefonos.Controllers
         // GET: SubAreas
         public ActionResult Index()
         {
-            return View(db.SubArea.ToList());
+            return View(db.SubArea.OrderBy(p=>p.Nombre).ToList());
         }
 
         // GET: SubAreas/Details/5
@@ -38,6 +38,9 @@ namespace ProyectoTelefonos.Controllers
         // GET: SubAreas/Create
         public ActionResult Create()
         {
+            ViewBag.DDLAreas = db.Area.OrderBy(a=>a.Nombre).ToList();
+            ViewBag.DDLPisos = db.Piso.OrderByDescending(p=>p.Numero).ToList();
+
             return View();
         }
 
@@ -46,11 +49,14 @@ namespace ProyectoTelefonos.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Nombre,Referente")] SubArea subArea)
+        public ActionResult Create([Bind(Include = "Id,Nombre,Referente,Area_id")] SubArea subArea, long id_piso)
         {
             if (ModelState.IsValid)
             {
+                Piso pi = db.Piso.Find(id_piso);
+                subArea.Pisos.Add(pi);
                 db.SubArea.Add(subArea);
+
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
@@ -65,11 +71,17 @@ namespace ProyectoTelefonos.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
+
             SubArea subArea = db.SubArea.Find(id);
+
             if (subArea == null)
             {
                 return HttpNotFound();
             }
+
+            ViewBag.DDLAreas = db.Area.ToList();
+            ViewBag.DDLPisos = db.Piso.OrderBy(p => p.Numero).ToList();
+
             return View(subArea);
         }
 
@@ -78,11 +90,24 @@ namespace ProyectoTelefonos.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Nombre,Referente")] SubArea subArea)
+        public ActionResult Edit([Bind(Include = "Id,Nombre,Referente,Area_id")] SubArea subArea, long id_piso)
         {
             if (ModelState.IsValid)
             {
+                // guardamos los datos de la subArea
                 db.Entry(subArea).State = EntityState.Modified;
+                db.SaveChanges();
+
+                // recuperamos la coleccion de Pisos de la SubArea
+                SubArea sa = db.SubArea.Include(s => s.Pisos).ToList().Find(su => su.Id == subArea.Id);
+
+                //borramos los antiguos Piso.. ojo modificar esto luego ya que borra todos los p
+                sa.Pisos.Clear();
+
+                // añadimos el nuevo piso
+                Piso pi = db.Piso.Find(id_piso);
+                subArea.Pisos.Add(pi);
+
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }

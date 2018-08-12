@@ -2,8 +2,10 @@
 {
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
+    using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity;
+    using System.Web.Mvc;
 
     public class ModelDB : DbContext
     {
@@ -21,20 +23,39 @@
         // sobre cómo configurar y usar un modelo Code First, vea http://go.microsoft.com/fwlink/?LinkId=390109.
 
         public DbSet<Interno> Interno { get; set; }
+        public DbSet<Directo> Directo { get; set; }
+        public DbSet<Area> Area { get; set; }
         public DbSet<SubArea> SubArea { get; set; }
-        public DbSet<Rack> Rack { get; set; }
+        public DbSet<Puesto> Puesto { get; set; }
         public DbSet<Piso> Piso { get; set; }
     }
 
-    [Table("Internos")]
+
+    [Table("Interno")]
     public class Interno
     {
         public long Id { get; set; }
+
+        [Required(ErrorMessage ="Debe ingresar un {0} de 4 digitos")]
+        [Range(0,6099,ErrorMessage ="Debe ingresar un rango entre {1} a {2}")]
+        [Remote("ExisteInterno", "Internos", AdditionalFields ="Id", ErrorMessage ="El {0} ya existe")]
         public long Numero { get; set; }
+ 
         public string Tipo { get; set; }
-        public long Tn { get; set; }
+
+        [Remote("ExisteTn", "Internos", ErrorMessage = "El {0} ya existe")]
+        public string Tn { get; set; }
+
+        [Display(Name ="Puesto Telefonico")]
+        public string PuestoTel { get; set; }
+
         public string Estado { get; set; }
-        public bool Mostrar { get; set; }
+
+        [Display(Name = "No Mostrar")]
+        public bool NoMostrar { get; set; }
+
+        [StringLength(500,ErrorMessage ="Ha superado la cantidad maxima de {1} caracteres")]
+        [DataType(DataType.MultilineText)]
         public string Observacion { get; set; }
 
         [ForeignKey("SubArea")]
@@ -42,13 +63,57 @@
         public virtual long SubArea_id { get; set; }
         public virtual SubArea SubArea { get; set; }
 
-        [ForeignKey("Rack")]
-        [Column("Rack_id")]
-        public virtual long Rack_id { get; set; }
-        public virtual Rack Rack { get; set; }
+        [ForeignKey("Puesto")]
+        [Column("Puesto_id")]
+        public virtual long Puesto_id { get; set; }
+        public virtual Puesto Puesto { get; set; }
     }
 
-    [Table("SubAreas")]
+
+    [Table("Directo")]
+    public class Directo
+    {
+        public long Id { get; set; }
+
+        [Required (ErrorMessage ="Debe ingresar un {0}")]
+        [Display(Name ="Numero de Telefono")]
+        [DataType(DataType.PhoneNumber)]
+        public string Numero { get; set; }
+
+        public string Estado { get; set; }
+        public bool NoMostrar { get; set; }
+        public string Observacion { get; set; }
+
+        [ForeignKey("SubArea")]
+        [Column("SubArea_id")]
+        public virtual long SubArea_id { get; set; }
+        public virtual SubArea SubArea { get; set; }
+
+        [ForeignKey("Puesto")]
+        [Column("Puesto_id")]
+        public virtual long Puesto_id { get; set; }
+        public virtual Puesto Puesto { get; set; }
+    }
+
+
+    [Table("Area")]
+    public class Area
+    {
+        public Area()
+        {
+            SubAreas = new Collection<SubArea>();
+        }
+
+        public long Id { get; set; }
+
+        [Required(ErrorMessage = "Debe ingresar un {0}")]
+        public string Nombre { get; set; }
+
+        public virtual ICollection<SubArea> SubAreas { get; set; }
+    }
+
+
+    [Table("SubArea")]
     public class SubArea
     {
         public SubArea()
@@ -58,30 +123,39 @@
         }
 
         public long Id { get; set; }
+
+        [Required(ErrorMessage = "Debe ingresar un {0}")]
         public string Nombre { get; set; }
+
         public string Referente { get; set; }
 
         public virtual ICollection<Interno> Internos { get; set; }
+        public virtual ICollection<Directo> Directos { get; set; }
         public virtual ICollection<Piso> Pisos { get; set; }
+
+        [ForeignKey("Area")]
+        [Column("Area_id")]
+        public virtual long Area_id { get; set; }
+        public virtual Area Area { get; set; }
     }
 
-    [Table("Racks")]
-    public class Rack
+
+    [Table("Puesto")]
+    public class Puesto
     {
-        public Rack()
+        public Puesto()
         {
             Internos = new Collection<Interno>();
         }
 
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public long Id { get; set; }
-        public string Puesto { get; set; }
-        public long PuestoTel { get; set; }
+        public string NumeroTipo { get; set; }
 
         public virtual ICollection<Interno> Internos { get; set; }
     }
 
-    [Table("Pisos")]
+
+    [Table("Piso")]
     public class Piso
     {
         public Piso()
@@ -90,10 +164,15 @@
         }
 
         public long Id { get; set; }
+
+        [Required(ErrorMessage = "Debe ingresar un {0}")]
         public long Numero { get; set; }
 
         public virtual ICollection<SubArea> SubAreas { get; set; }
     }
+
+
+
 
 
 }

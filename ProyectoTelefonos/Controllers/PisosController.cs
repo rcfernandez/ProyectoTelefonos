@@ -14,10 +14,10 @@ namespace ProyectoTelefonos.Controllers
     {
         private ModelDB db = new ModelDB();
 
-        // GET: Pisoes
+        // GET: Pisos
         public ActionResult Index()
         {
-            return View(db.Piso.ToList());
+            return View(db.Piso.OrderBy(p=>p.Numero).ToList());
         }
 
         // GET: Pisos/Details/5
