@@ -15,16 +15,13 @@
                         <span>Piso</span>
                     </th>
                     <th>
-                        @Html.DisplayNameFor(model => model.Nombre)
+                        <span>Sector</span>
                     </th>
                     <th>
                         @Html.DisplayNameFor(model => model.Referente)
                     </th>
-                    <th>
-                        <span>Interno</span>
-                    </th>
-                    <th>
-                        <span>Directo</span>
+                    <th class="text-center">
+                        <span>Interno / (Directo)</span>
                     </th>
                 </tr>
             </thead>
@@ -32,7 +29,7 @@
             <tbody class="buscar">
             @foreach (var item in Model)
             {
-                if (item.Nombre != "(sin sub-area)" && item.Internos.Select(i=>i.NoMostrar).FirstOrDefault() != true)
+                if (item.Nombre != "(sin sub-area)" && item.Internos.Select(i=>i.NoMostrar).FirstOrDefault() != true && (item.Internos.FirstOrDefault() != null || item.Directos.FirstOrDefault() != null ))
                 {
                     <tr>
                         <td>
@@ -46,7 +43,7 @@
                             }
                             else
                             {
-                                @item.Pisos.Select(p => p.Numero).FirstOrDefault()
+                                @item.Pisos.Select(p => p.Numero).FirstOrDefault()<span>°</span>
                             }
                         </td>
                         <td>
@@ -55,21 +52,20 @@
                         <td>
                             @Html.DisplayFor(modelItem => item.Referente)
                         </td>
-                        <td>
+                        <td class="text-center">
                             @foreach (var item2 in item.Internos)
                             {
 
                                 @item2.Numero<span>&nbsp;&nbsp;</span>
 
                             }
-                        </td>
-                        <td>
+
                             @foreach (var item3 in item.Directos)
                             {
-                                <p class="text-nowrap">@item3.Numero</p>
+                                <span class="text-nowrap">(@item3.Numero)</span><br />
                             }
-                        </td>
 
+                        </td>
                     </tr>
 
                 }

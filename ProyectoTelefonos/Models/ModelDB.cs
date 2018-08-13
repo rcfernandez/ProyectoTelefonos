@@ -43,7 +43,7 @@
  
         public string Tipo { get; set; }
 
-        [Remote("ExisteTn", "Internos", ErrorMessage = "El {0} ya existe")]
+        [Remote("ExisteTn", "Internos",AdditionalFields ="Id", ErrorMessage = "El {0} ya existe")]
         public string Tn { get; set; }
 
         [Display(Name ="Puesto Telefonico")]

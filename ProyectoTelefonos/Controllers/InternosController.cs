@@ -204,8 +204,15 @@ namespace ProyectoTelefonos.Controllers
 
 
         // accion para saber si existe un interno ingresado al crear
-        public JsonResult ExisteTn(string Tn)
+        public JsonResult ExisteTn(string Tn, long  Id)
         {
+            var internoXId = db.Interno.Find(Id);
+            
+            if (internoXId.Tn == Tn)
+            {
+                return Json(true, JsonRequestBehavior.AllowGet);
+            }
+
             if (db.Interno.Where(i => i.Tn == Tn).Select(i => i.Tn).FirstOrDefault() != Tn)
             {
                 // devuelve true si no existe el interno
