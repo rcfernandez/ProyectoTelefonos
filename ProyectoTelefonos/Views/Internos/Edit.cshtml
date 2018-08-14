@@ -6,6 +6,8 @@
 
 <h2>Edit</h2>
 
+<div class=""  ></div>
+
 
 @using (Html.BeginForm())
 {
@@ -21,7 +23,7 @@
     <div class="form-group">
         @Html.LabelFor(model => model.Numero, htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
-            @Html.EditorFor(model => model.Numero, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.EditorFor(model => model.Numero, new { htmlAttributes = new { @class = "form-control", @readonly="readonly" } })
             @Html.ValidationMessageFor(model => model.Numero, "", new { @class = "text-danger" })
         </div>
     </div>

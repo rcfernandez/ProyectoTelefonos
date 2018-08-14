@@ -181,48 +181,61 @@ namespace ProyectoTelefonos.Controllers
         }
 
 
-        // accion para saber si existe un interno ingresado al crear
-        public JsonResult ExisteInterno(long Numero, long Id)
+        // accion para saber si existe un interno ingresado al crear/editar
+        public JsonResult ExisteInterno(long Numero, long? Id)
         {
             var internoXId = db.Interno.Find(Id);
 
-            if (internoXId.Numero == Numero)
-            {
-                // devuelve true si el numero es el mismo, o sea si no cambiamos el interno
-                return Json(true, JsonRequestBehavior.AllowGet);
-            }
-
-            if (db.Interno.Where(i => i.Numero == Numero).Select(i => i.Numero).FirstOrDefault() != Numero)
+            // NRO NO EXISTE + ID NULL = NUMERO NUEVO = PASA
+            if (db.Interno.Where(i => i.Numero == Numero).Select(i => i.Numero).FirstOrDefault() != Numero && Id == null)
             {
                 // devuelve true si no existe el interno
                 return Json(true, JsonRequestBehavior.AllowGet);
             }
 
-            // devuelve false si ya existe el interno
-            return Json(false, JsonRequestBehavior.AllowGet);
+            // NRO EXISTE + ID NULL = NRO YA EXISTE = NO PASA
+            if (db.Interno.Where(i => i.Numero == Numero).Select(i => i.Numero).FirstOrDefault() == Numero && Id == null)
+            {
+                return Json(false, JsonRequestBehavior.AllowGet);
+            }
+
+            // NRO EXISTE + ID NOT NULL = NRO YA EXISTE Y NO SE MODIFICA = PASA
+            if (internoXId.Numero == Numero)
+            {
+                return Json(true, JsonRequestBehavior.AllowGet);
+            }
+
+            // NRO NO EXISTE + ID NOT NULL = NRO NUEVO EN EDIT = PASA
+            return Json(true, JsonRequestBehavior.AllowGet);
         }
 
 
-        // accion para saber si existe un interno ingresado al crear
-        public JsonResult ExisteTn(string Tn, long  Id)
+        // accion para saber si existe un tn ingresado al crear/editar
+        public JsonResult ExisteTn(string Tn, long?  Id)
         {
             var internoXId = db.Interno.Find(Id);
-            
+
+            // TN NO EXISTE + ID NULL = NUMERO NUEVO = PASA
+            if (db.Interno.Where(i => i.Tn == Tn).Select(i => i.Tn).FirstOrDefault() != Tn && Id == null)
+            {
+                return Json(true, JsonRequestBehavior.AllowGet);
+            }
+
+            // TN EXISTE = NO PASA
+            if (db.Interno.Where(i => i.Tn == Tn).Select(i => i.Tn).FirstOrDefault() == Tn)
+            {
+                return Json(false, JsonRequestBehavior.AllowGet);
+            }
+
+            // TN EXISTE + ID NOT NULL = NRO YA EXISTE Y NO SE MODIFICA = PASA
             if (internoXId.Tn == Tn)
             {
                 return Json(true, JsonRequestBehavior.AllowGet);
             }
 
-            if (db.Interno.Where(i => i.Tn == Tn).Select(i => i.Tn).FirstOrDefault() != Tn)
-            {
-                // devuelve true si no existe el interno
-                return Json(true, JsonRequestBehavior.AllowGet);
-            }
-            else
-            {
-                // devuelve false si ya existe el interno
-                return Json(false, JsonRequestBehavior.AllowGet);
-            }
+            // TN NO EXISTE + ID NOT NULL = TN NUEVO EN EDIT = PASA
+            return Json(true, JsonRequestBehavior.AllowGet);
+
         }
 
 
