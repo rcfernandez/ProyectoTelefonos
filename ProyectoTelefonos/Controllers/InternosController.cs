@@ -215,27 +215,32 @@ namespace ProyectoTelefonos.Controllers
         {
             var internoXId = db.Interno.Find(Id);
 
-            // TN NO EXISTE + ID NULL = NUMERO NUEVO = PASA
-            if (db.Interno.Where(i => i.Tn == Tn).Select(i => i.Tn).FirstOrDefault() != Tn && Id == null)
+            // INTERNO NUEVO
+            if (internoXId == null)
             {
+                // TN EXISTE
+                if (db.Interno.Where(i => i.Tn == Tn).Select(i => i.Tn).FirstOrDefault() == Tn)
+                {
+                    return Json(false, JsonRequestBehavior.AllowGet);
+                }
+
+                // TN NO EXISTE
                 return Json(true, JsonRequestBehavior.AllowGet);
             }
 
-            // TN EXISTE = NO PASA
-            if (db.Interno.Where(i => i.Tn == Tn).Select(i => i.Tn).FirstOrDefault() == Tn)
-            {
-                return Json(false, JsonRequestBehavior.AllowGet);
-            }
-
-            // TN EXISTE + ID NOT NULL = NRO YA EXISTE Y NO SE MODIFICA = PASA
+            // INTERNO A EDITAR + TN NO CAMBIA
             if (internoXId.Tn == Tn)
             {
                 return Json(true, JsonRequestBehavior.AllowGet);
             }
 
-            // TN NO EXISTE + ID NOT NULL = TN NUEVO EN EDIT = PASA
-            return Json(true, JsonRequestBehavior.AllowGet);
+            // INTERNO A EDITAR + TN EXISTE
+            if (db.Interno.Where(i => i.Tn == Tn).Select(i => i.Tn).FirstOrDefault() == Tn)
+            {
+                return Json(false, JsonRequestBehavior.AllowGet);
+            }
 
+            return Json(true, JsonRequestBehavior.AllowGet);
         }
 
 
