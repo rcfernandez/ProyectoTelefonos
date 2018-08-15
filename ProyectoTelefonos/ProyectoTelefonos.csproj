@@ -257,6 +257,7 @@
     <Content Include="Views\Directos\Edit.cshtml" />
     <Content Include="Views\Directos\Index.cshtml" />
     <Content Include="Views\Home\_ListadoInternos.cshtml" />
+    <Content Include="Views\Home\Correos.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
