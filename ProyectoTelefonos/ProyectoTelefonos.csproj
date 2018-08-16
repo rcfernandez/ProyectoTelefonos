@@ -169,9 +169,9 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201808132140237_Initial.cs" />
-    <Compile Include="Migrations\201808132140237_Initial.Designer.cs">
-      <DependentUpon>201808132140237_Initial.cs</DependentUpon>
+    <Compile Include="Migrations\201808162019530_Initial.cs" />
+    <Compile Include="Migrations\201808162019530_Initial.Designer.cs">
+      <DependentUpon>201808162019530_Initial.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\ModelDB.cs" />
@@ -258,7 +258,11 @@
     <Content Include="Views\Directos\Index.cshtml" />
     <Content Include="Views\Home\_ListadoInternos.cshtml" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201808162019530_Initial.resx">
+      <DependentUpon>201808162019530_Initial.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
@@ -271,11 +275,6 @@
     <None Include="packages.config" />
     <Content Include="Scripts\jquery-3.3.1.slim.min.map" />
     <Content Include="Scripts\jquery-3.3.1.min.map" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Migrations\201808132140237_Initial.resx">
-      <DependentUpon>201808132140237_Initial.cs</DependentUpon>
-    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
